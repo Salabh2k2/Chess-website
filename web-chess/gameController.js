@@ -31,6 +31,13 @@ function loadPosition(position, playerToMove) {
         }
     }
 }
+function play( audio_path, time_in_milisec){
+    let beep = new Audio( audio_path);
+    beep.loop = true;
+    beep.play();
+    setTimeout(() => { beep.pause(); }, time_in_milisec);
+    }
+    
 
 function loadPiece(piece, position) {
     const squareElement = document.getElementById(`${position[0]}${position[1]}`);
@@ -98,7 +105,7 @@ function setPieceHoldEvents() {
         
     document.addEventListener('mouseup', function(event) {
         window.clearInterval(movePieceInterval);
-
+       
         if (curHeldPiece != null) {
             const boardElement = document.querySelector('.board');
 
@@ -115,10 +122,12 @@ function setPieceHoldEvents() {
                     const yPosition = Math.floor((mousePositionOnBoardY - boardBorderSize) / document.getElementsByClassName('square')[0].offsetHeight);
 
                     const pieceReleasePosition = [yPosition, xPosition];
+                    
 
                     if (!(pieceReleasePosition[0] == curHeldPieceStartingPosition[0] && pieceReleasePosition[1] == curHeldPieceStartingPosition[1])) {
                         if (validateMovement(curHeldPieceStartingPosition, pieceReleasePosition)) {
                             movePiece(curHeldPiece, curHeldPieceStartingPosition, pieceReleasePosition);
+                            play('assets/sound.wav', 150);
                         }
                     }
                 }
